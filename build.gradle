@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'se.digg.dgc:dgc-schema:1.0.1'
     implementation 'se.digg.dgc:dgc-create-validate:1.0.1'
     

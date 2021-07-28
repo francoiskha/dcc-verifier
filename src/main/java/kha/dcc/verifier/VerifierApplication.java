@@ -1,5 +1,7 @@
 package kha.dcc.verifier;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +10,9 @@ import se.digg.dgc.service.impl.DefaultDGCDecoder;
 import se.digg.dgc.signatures.CertificateProvider;
 import se.digg.dgc.signatures.DGCSignatureVerifier;
 import se.digg.dgc.signatures.impl.DefaultDGCSignatureVerifier;
+
+import java.text.ParseException;
+import java.util.List;
 
 @SpringBootApplication
 public class VerifierApplication {
@@ -25,9 +30,14 @@ public class VerifierApplication {
     DGCSignatureVerifier dgcSignatureVerifier() {
 	    return  new DefaultDGCSignatureVerifier();
     }
-
+    
     @Bean
-    CertificateProvider certificateProvider() {
-        return  new HardCodedCertificateProvider();
+    CertificateProvider certificateProvider(
+            @Value("${trustListEndpointUrl}") String trustListEndpointUrl
+    ) throws ParseException {
+	    return new CompositeCertificateProvider(List.of(
+                new HardCodedCertificateProvider(),
+                new DgcTrustPointCertificateProvider(trustListEndpointUrl)
+        ));
     }
 }

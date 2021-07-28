@@ -1,0 +1,4 @@
+= dcc-verifier
+
+This a simple demo to verify EU Digital COVID Certificates.
+It is based on https://github.com/DIGGSweden/dgc-java[DIGGSweden/dgc-java].
